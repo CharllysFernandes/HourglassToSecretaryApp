@@ -49,4 +49,4 @@ df = pd.DataFrame({
 })
 
 # Escrever para um arquivo Excel
-df.to_excel('dados.xlsx', index=False, header=False, startcol=1)
+df.to_excel('publishers_data.xlsx', index=False, header=False, startcol=1)
