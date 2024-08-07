@@ -28,25 +28,50 @@ statuses = [2 if publisher.get('status') == "Regular Pioneer" else (1 if publish
 appt_ms = [1 if publisher.get('appt') == "MS" else 0 for publisher in data['publishers']]
 appt_elder = [1 if publisher.get('appt') == "Elder" else 0 for publisher in data['publishers']]
 births = [format_date(publisher.get('birth', '')) for publisher in data['publishers']]
-baptisms = [publisher.get('baptism', '') for publisher in data['publishers']]
+baptisms = [format_date(publisher.get('baptism', '')) for publisher in data['publishers']]
 sexes = [1 if publisher.get('sex') == "Male" else 0 for publisher in data['publishers']]
 cellphones = [extract_numbers(publisher.get('cellphone', '')) for publisher in data['publishers']]
 loginemails = [publisher.get('loginemail', '') for publisher in data['publishers']]
 
+# Extração dos endereços
+addresses = {address['id']: address for address in data['addresses']}
+address_lines = []
+
+for publisher in data['publishers']:
+    address_id = publisher.get('address_id')
+    if address_id and address_id in addresses:
+        address = addresses[address_id]
+        line1 = address.get('line1', '')
+        line2 = address.get('line2', '')
+        address_lines.append(f"{line1} - {line2}")
+    else:
+        address_lines.append('')
+
 # Criar um DataFrame com os dados extraídos
 df = pd.DataFrame({
+    'A': [''] * len(firstnames),
     'B': firstnames,
     'C': middlenames,
     'D': lastnames,
+    'E': [''] * len(firstnames),
     'F': statuses,
     'G': appt_ms,
     'H': appt_elder,
+    'I': [''] * len(firstnames),
+    'J': [''] * len(firstnames),
+    'K': [''] * len(firstnames),
     'L': births,
     'M': baptisms,
     'N': sexes,
     'O': cellphones,
-    'R': loginemails
+    'P': [''] * len(firstnames),
+    'Q': [''] * len(firstnames),
+    'R': loginemails,
+    'S': [''] * len(firstnames),
+    'T': [''] * len(firstnames),
+    'U': address_lines,
+    'V': ['Luziânia-GO'] * len(firstnames)
 })
 
 # Escrever para um arquivo Excel
-df.to_excel('publishers_data.xlsx', index=False, header=False, startcol=1)
+df.to_excel('publishers_data.xlsx', index=False, header=False, startcol=0)
