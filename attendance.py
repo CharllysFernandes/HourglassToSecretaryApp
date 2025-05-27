@@ -14,7 +14,7 @@ def next_sunday(date):
     return date + timedelta(days=(6 - date.weekday()))
 
 # Carregar dados do arquivo JSON
-with open('dados.json', 'r') as file:
+with open('hourglass-export.json', 'r') as file:
     data = json.load(file)
 
 # Função para criar a lista de datas e valores para um mês
